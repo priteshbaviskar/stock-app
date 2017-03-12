@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
  */
 
 @Component
-@Path("/")
+@Path("/stock-analysis")
 public class StockWebServiceImpl implements StockWebService {
 
 
@@ -35,23 +35,26 @@ public class StockWebServiceImpl implements StockWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("stockAnalysis/maxYield/{ticker}")
+    @Path("{ticker}/maxyield")
     public Response getBuySellDates(@PathParam("ticker") String ticker)  {
 
         String response;
-        log.info("Fetching buy/sell dates for: "+ticker);
         try {
             ResponsePair pair = stockService.getDates(ticker);
             if(pair != null) {
-                response = responseJson.addStatus(true).addResponseMessage("success").build(pair);
+                log.info("Max yielding buy/sell dates for: "+ticker+ " are" + pair.toString());
+                response = responseJson.addStatus(true).addResponseMessage("These dates would yield maximum returns").build(pair);
                 return Response.ok().entity(response).build();
-
+            }else {
+                log.info(" No historical data available for: "+ticker);
+                response = responseJson.addStatus(false).addResponseMessage("No historical data available for stock").build(pair);
+                return Response.status(Response.Status.NOT_FOUND).entity(response).build();
             }
         } catch (InvalidTickerException e) {
-            e.printStackTrace();
+            log.info(" Invalid ticker name: "+ticker);
+            response = responseJson.addStatus(false).addResponseMessage("Ticker name is not valid.").build(null);
+            return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
         }
-
-        return null;
     }
 
     public void setResponseJson(ResponseJson responseJson) {

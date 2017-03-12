@@ -31,21 +31,18 @@ public class StockServiceImpl implements StockService {
         if(historicalQuotes != null && !historicalQuotes.isEmpty()) {
             return findDatesForMaximumProfit(historicalQuotes);
         }
-
         return null;
     }
 
 
-    private List<HistoricalQuote> getHistoricalData(String ticker) throws InvalidTickerException {
+    public List<HistoricalQuote> getHistoricalData(String ticker) throws InvalidTickerException {
 
         if(ticker != null && !ticker.isEmpty()){
             try {
                 Calendar fromCal = Calendar.getInstance();
                 Calendar toCal = Calendar.getInstance();
                 fromCal.add(Calendar.MONTH, -6); // go back six months by default.
-
                 Stock stockData = YahooFinance.get(ticker,fromCal,toCal, Interval.DAILY);
-
                 return stockData.getHistory();
 
             } catch (IOException e) {
@@ -76,101 +73,13 @@ public class StockServiceImpl implements StockService {
             }
         }
 
-
+        // there will always be a pair since we have daily highs and lows for a stock.
+        // if the stock goes south for 6 months straight, we still have the first low-high pair
+        // yielding the maximum profit.
         ResponsePair pair = new ResponsePair();
         pair.setBuyDate(minQuote.getDate().getTime());
         pair.setSellDate(maxQuote.getDate().getTime());
         return pair;
-
-
-
-
-
-//        BigDecimal maxProfit = new BigDecimal(0);
-//        BigDecimal maxOverAllProfit = new BigDecimal(0);
-//        //BigDecimal minSoFar = historicalQuotes.get(0).getLow();
-//        HistoricalQuote minHistoricalQuoteSoFar = historicalQuotes.get(0);
-//
-//        BigDecimal dailyMax = new BigDecimal(0);
-//        Calendar buyDate,sellDate;
-//
-//        BigDecimal minLowValue = BigDecimal.valueOf(Integer.MAX_VALUE);
-//        for(HistoricalQuote quote : historicalQuotes) {
-//            if(quote.getLow().compareTo(minLowValue) < 0) {
-//                minLowValue = quote.getLow();
-//            }
-//        }
-
-
-
-
-
-
-//        for(int i = 0 ; i < historicalQuotes.size() ; i) {
-
-//            if (prices.length == 0) {
-//                return 0 ;
-//            }
-//            int max = 0 ;
-//            int sofarMin = prices[0] ;
-//            for (int i = 0 ; i < prices.length ; ++i) {
-//                if (prices[i] > sofarMin) {
-//                    max = Math.max(max, prices[i] - sofarMin) ;
-//                } else{
-//                    sofarMin = prices[i];
-//                }
-//            }
-//            return  max ;
-//
-//            if(historicalQuotes.get(i).getHigh().compareTo(minHistoricalQuoteSoFar.getLow()) > 0) {
-//
-//                BigDecimal currentProfit = historicalQuotes.get(i).getHigh().subtract(minHistoricalQuoteSoFar.getLow());
-//
-//                if(currentProfit.compareTo(maxProfit) > 0) {
-//                     maxProfit = currentProfit;
-//                     buyDate =  minHistoricalQuoteSoFar.getDate();
-//                     sellDate = historicalQuotes.get(i).getDate();
-//                 } else {
-//                     maxProfit =
-//                 }
-//            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//            //check out for today's profit.
-//            dailyMax = historicalQuotes.get(i).getHigh().subtract(historicalQuotes.get(i).getClose());
-//            //check out for profit between yest and today- add it with currentMaxProfit so far.
-//            maxCurrentProfit = maxCurrentProfit.add(historicalQuotes.get(i+1).getHigh().subtract(historicalQuotes.get(i).getLow()));
-//
-//            // whoever is the max between 2 is current max profit so far.
-//            //maxCurrentProfit = maxCurrentProfit.compareTo(dailyMax) > 0 ? maxCurrentProfit : dailyMax;
-//            if(maxCurrentProfit.compareTo(dailyMax) > 0) {
-//                //currentMax is still local max
-//                buyDate = historicalQuotes.get(i).getDate();
-//                sellDate = historicalQuotes.get(i+1).getDate();
-//
-//            }else {
-//                //dailyMax wins
-//                buyDate = historicalQuotes.get(i).getDate();
-//                sellDate = historicalQuotes.get(i).getDate();
-//            }
-//
-//           // maxOverAllProfit = maxOverAllProfit.compareTo(maxCurrentProfit) > 0 ? maxOverAllProfit : maxCurrentProfit;
-//            if(maxOverAllProfit.compareTo(maxCurrentProfit) > 0){
-//
-//            }
-
 
     }
 

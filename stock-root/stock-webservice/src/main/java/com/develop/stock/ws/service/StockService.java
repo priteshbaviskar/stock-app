@@ -11,7 +11,7 @@ public interface StockService {
 
     /**
      * Returns buy/sell Date pair which returns maximum yield for a given stock ticker.
-     * This method will look out for dates up to 180 days in past.
+     * This method will look out for dates up to 6 months in past.
      * @param ticker
      */
     ResponsePair getDates(String ticker) throws InvalidTickerException;

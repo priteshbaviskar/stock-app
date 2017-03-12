@@ -4,6 +4,23 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
+/**
+ * A generic json response builder which can be used by different modules across the system.
+ * A standard messaging format follows the following convention-
+ * {
+ *      "responseMessage": "A custom response message which can be directly rendered to UI",
+ *      "isSuccess": true/false,
+ *      "object": {
+ *          // a custom response object returned. In this case, its a pair of buy/sell dates
+ *          "responsepair": {
+ *              "buyDate": "2016-10-26",
+ *              "sellDate": "2017-01-17"
+ *          }
+ *      }
+ * }
+ *
+ */
+
 public class ResponseJson extends Json{
 	
 	private boolean isSuccess;
@@ -26,13 +43,7 @@ public class ResponseJson extends Json{
 	
 		if(entity != null) {
 			String entityName = entity.getClass().getSimpleName().toLowerCase();
-			//special case. Maybe a better way to handle?
-            // message codes 001 are user login specific.
-			if(responseMessage.contains("001")) {
-				entityMap.put("auth_token", entity);
-			}else {
-				entityMap.put(entityName, entity);
-			}
+			entityMap.put(entityName, entity);
 		}
 		
 		responseMap.put("isSuccess", isSuccess);
@@ -41,21 +52,6 @@ public class ResponseJson extends Json{
 		
 		return writeAsJson(responseMap);
 	}
-	
-	public <T> String buildCustomObject(Class<?> clazz, Map<String, Object> map) {
-		
-		Map<String, Object> responseMap = Maps.newHashMap();
-		Map<String, Object> entityMap = Maps.newHashMap();
-		String entityName = clazz.getSimpleName().toLowerCase();
-		entityMap.put(entityName, map);
-		
-		responseMap.put("isSuccess", isSuccess);
-		responseMap.put("responseMessage", responseMessage);
-		responseMap.put("object", entityMap);
-		
-		return writeAsJson(responseMap);
-	}
-
 	public boolean isSuccess() {
 		return isSuccess;
 	}

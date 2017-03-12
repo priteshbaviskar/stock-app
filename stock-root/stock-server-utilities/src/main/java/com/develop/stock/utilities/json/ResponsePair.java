@@ -30,4 +30,12 @@ public class ResponsePair implements Serializable{
     public void setSellDate(Date sellDate) {
         this.sellDate = sellDate;
     }
+
+    @Override
+    public String toString() {
+        return "ResponsePair{" +
+                "buyDate=" + buyDate +
+                ", sellDate=" + sellDate +
+                '}';
+    }
 }
