@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<import resource="hibernate.xml" />
+	
+	<context:component-scan base-package="com.develop.stock.ws.*" />
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:/DEV/stock-ws.properties</value>  <!-- environment specific properties, currently set to DEV env. -->
+		</property>
+	</bean>
+
+
+	<bean id="stock" class="com.develop.stock.utilities.model.Stock" />
+	
+	<!-- Utilities beans -->
+	<bean id="responseJson" class="com.develop.stock.utilities.json.ResponseJson"></bean>
+	<!-- Web services beans -->
+
+	<bean id="stockWebService" class="com.develop.stock.ws.StockWebServiceImpl">
+		<property name="stockService" ref="stockService" />
+	</bean>
+
+	<bean id="stockService" class="com.develop.stock.ws.service.StockServiceImpl"/>
+
+
+
+</beans>
