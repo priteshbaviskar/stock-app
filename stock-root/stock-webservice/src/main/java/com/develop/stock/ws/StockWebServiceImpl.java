@@ -1,9 +1,9 @@
 package com.develop.stock.ws;
 
 import com.develop.stock.utilities.json.ResponseJson;
+import com.develop.stock.utilities.json.ResponsePair;
 import com.develop.stock.ws.exception.InvalidTickerException;
 import com.develop.stock.ws.service.StockService;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
  */
 
 @Component
-@Path("/stock-service")
+@Path("/")
 public class StockWebServiceImpl implements StockWebService {
 
 
@@ -35,15 +35,17 @@ public class StockWebServiceImpl implements StockWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("stock/buySellDates/{ticker}")
+    @Path("stockAnalysis/maxYield/{ticker}")
     public Response getBuySellDates(@PathParam("ticker") String ticker)  {
 
         String response;
         log.info("Fetching buy/sell dates for: "+ticker);
         try {
-            Pair pair = stockService.getDates(ticker);
+            ResponsePair pair = stockService.getDates(ticker);
             if(pair != null) {
                 response = responseJson.addStatus(true).addResponseMessage("success").build(pair);
+                return Response.ok().entity(response).build();
+
             }
         } catch (InvalidTickerException e) {
             e.printStackTrace();

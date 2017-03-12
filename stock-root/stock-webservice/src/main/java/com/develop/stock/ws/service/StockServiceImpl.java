@@ -1,10 +1,11 @@
 package com.develop.stock.ws.service;
 
+import com.develop.stock.utilities.json.ResponsePair;
 import com.develop.stock.ws.exception.InvalidTickerException;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
@@ -18,12 +19,13 @@ import java.util.List;
 /**
  * Created by pritesh on 3/11/17.
  */
+@Service
 public class StockServiceImpl implements StockService {
 
     private static Log log = LogFactory.getLog(StockServiceImpl.class);
 
     @Override
-    public Pair getDates(String ticker) throws InvalidTickerException {
+    public ResponsePair getDates(String ticker) throws InvalidTickerException {
 
         List<HistoricalQuote> historicalQuotes = getHistoricalData(ticker);
         if(historicalQuotes != null && !historicalQuotes.isEmpty()) {
@@ -42,7 +44,7 @@ public class StockServiceImpl implements StockService {
                 Calendar toCal = Calendar.getInstance();
                 fromCal.add(Calendar.MONTH, -6); // go back six months by default.
 
-                Stock stockData = YahooFinance.get(ticker,fromCal,toCal, Interval.MONTHLY);
+                Stock stockData = YahooFinance.get(ticker,fromCal,toCal, Interval.DAILY);
 
                 return stockData.getHistory();
 
@@ -54,7 +56,7 @@ public class StockServiceImpl implements StockService {
         return null;
     }
 
-    private Pair findDatesForMaximumProfit(List<HistoricalQuote> historicalQuotes) {
+    private ResponsePair findDatesForMaximumProfit(List<HistoricalQuote> historicalQuotes) {
 
         historicalQuotes=  Lists.reverse(historicalQuotes);
         HistoricalQuote minQuote = historicalQuotes.get(0);
@@ -75,7 +77,11 @@ public class StockServiceImpl implements StockService {
         }
 
 
-        return Pair.of(minQuote.getDate(), maxQuote.getDate());
+        ResponsePair pair = new ResponsePair();
+        pair.setBuyDate(minQuote.getDate().getTime());
+        pair.setSellDate(maxQuote.getDate().getTime());
+        return pair;
+
 
 
 

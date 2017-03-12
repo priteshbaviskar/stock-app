@@ -6,6 +6,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +18,10 @@ public class Json {
 
 	protected String writeAsJson(Map<String, Object> responseMap) {
 
-		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        ObjectMapper mapper = new ObjectMapper();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        mapper.setDateFormat(df);
+		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
 		try {
 			return ow.writeValueAsString(responseMap);
 		} catch (Exception ex) {

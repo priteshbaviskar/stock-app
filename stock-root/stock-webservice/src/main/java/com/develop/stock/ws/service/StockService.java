@@ -1,7 +1,7 @@
 package com.develop.stock.ws.service;
 
+import com.develop.stock.utilities.json.ResponsePair;
 import com.develop.stock.ws.exception.InvalidTickerException;
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Service level interface carrying out basic service operations for StockWebService class.
@@ -14,6 +14,6 @@ public interface StockService {
      * This method will look out for dates up to 180 days in past.
      * @param ticker
      */
-    Pair getDates(String ticker) throws InvalidTickerException;
+    ResponsePair getDates(String ticker) throws InvalidTickerException;
 
 }
