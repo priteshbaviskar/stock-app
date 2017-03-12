@@ -1,7 +1,5 @@
 package com.develop.stock.ws;
 
-import com.develop.stock.ws.exception.InvalidTickerException;
-
 import javax.ws.rs.core.Response;
 
 /**
@@ -9,5 +7,5 @@ import javax.ws.rs.core.Response;
  */
 public interface StockWebService {
 
-    Response getBuySellDates(String ticker) throws InvalidTickerException;
+    Response getBuySellDates(String ticker);
 }

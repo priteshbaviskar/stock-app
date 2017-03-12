@@ -5,4 +5,7 @@ package com.develop.stock.ws.exception;
  */
 public class InvalidTickerException extends Exception {
 
+    public InvalidTickerException(String exceptionMessage) {
+        super(exceptionMessage);
+    }
 }

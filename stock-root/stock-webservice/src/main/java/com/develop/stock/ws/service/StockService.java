@@ -1,5 +1,6 @@
 package com.develop.stock.ws.service;
 
+import com.develop.stock.ws.exception.InvalidTickerException;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
@@ -13,6 +14,6 @@ public interface StockService {
      * This method will look out for dates up to 180 days in past.
      * @param ticker
      */
-    Pair getDates(String ticker);
+    Pair getDates(String ticker) throws InvalidTickerException;
 
 }
