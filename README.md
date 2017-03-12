@@ -23,3 +23,7 @@ Here's an example of the GET call to fetch buy/sell dates for ticker SFLY-
   "isSuccess": false,
   "object": {}
 }`
+
+### Steps to deploy
+- Use maven to build project. Simply type `mvn clean install` from stock-root folder. 
+- The project generates an artifact called stock-webservice.war. Move this WAR file to your local tomcat/webapps directory and you are all set to run the application.
