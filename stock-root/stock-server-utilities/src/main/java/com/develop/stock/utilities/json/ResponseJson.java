@@ -1,11 +1,7 @@
 package com.develop.stock.utilities.json;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 
-import java.math.BigInteger;
-import java.util.List;
 import java.util.Map;
 
 public class ResponseJson extends Json{
@@ -59,46 +55,6 @@ public class ResponseJson extends Json{
 		
 		return writeAsJson(responseMap);
 	}
-	
-	
-	public <T> String buildList(List<T> entities) {
-
-		Map<String, Object> responseMap = Maps.newHashMap();
-		Multimap<String, Object> entityMap = ArrayListMultimap.create();
-		
-		responseMap.put("isSuccess", isSuccess);
-		responseMap.put("responseMessage", responseMessage);
-
-		if(entities != null && !entities.isEmpty()) {
-			String entityName = entities.get(0).getClass().getSimpleName().toLowerCase();
-			for (T entity : entities) {
-				entityMap.put(entityName, entity);
-			}
-		}
-		responseMap.put("object", entityMap.asMap());
-		return writeAsJson(responseMap);
-	}
-
-    public <T> String buildSearchResultList(List<T> entities, BigInteger totalCount) {
-
-
-        Map<String, Object> responseMap = Maps.newHashMap();
-        Multimap<String, Object> entityMap = ArrayListMultimap.create();
-
-        responseMap.put("isSuccess", isSuccess);
-        responseMap.put("responseMessage", responseMessage);
-
-        if(entities != null && !entities.isEmpty()) {
-            String entityName = entities.get(0).getClass().getSimpleName().toLowerCase();
-            entityMap.put("totalCount", totalCount);
-            for (T entity : entities) {
-                entityMap.put(entityName, entity);
-            }
-
-        }
-        responseMap.put("object", entityMap.asMap());
-        return writeAsJson(responseMap);
-    }
 
 	public boolean isSuccess() {
 		return isSuccess;

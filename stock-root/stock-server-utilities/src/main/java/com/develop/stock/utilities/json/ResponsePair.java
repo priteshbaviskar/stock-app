@@ -10,5 +10,5 @@ public class ResponsePair implements Serializable{
 
     private Calendar buyDate;
     private Calendar sellDate;
-    
+
 }
